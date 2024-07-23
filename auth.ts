@@ -3,7 +3,7 @@ import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "./lib/db";
 
-export const { handlers, auth } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: PrismaAdapter(db),
     session: {
         //we are using jwt strategy instead of database bcz it doesn't work with db session and db session doesn't work on edge, and thats why we are not using Session Schema in prisma.schema

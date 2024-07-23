@@ -2,8 +2,33 @@
 // So for this issue there is an solution which is that we are going to use auth.config.ts as middleware.
 
 import type { NextAuthConfig } from "next-auth";
-import Github from "next-auth/providers/github";
+import Credentials from "next-auth/providers/credentials";
+import { LoginSchema } from "./schemas";
+import { getUserByEmail } from "./data/user";
+import { compare } from "bcryptjs";
 
 export default {
-    providers: [Github],
+    providers: [
+        Credentials({
+            async authorize(credentials) {
+                const validatedFields = LoginSchema.safeParse(credentials);
+
+                if (validatedFields.success) {
+                    const { email, password } = validatedFields.data;
+
+                    const user = await getUserByEmail(email);
+
+                    if (!user || !user.password) return null;
+
+                    const passwordMatch = await compare(
+                        password,
+                        user.password
+                    );
+
+                    if (passwordMatch) return user;
+                }
+                return null;
+            },
+        }),
+    ],
 } satisfies NextAuthConfig;
