@@ -10,7 +10,12 @@ import { compare } from "bcryptjs";
 export default {
     providers: [
         Credentials({
-            async authorize(credentials) {
+            credentials: {
+                email: {},
+                password: {},
+            },
+
+            authorize: async (credentials) => {
                 const validatedFields = LoginSchema.safeParse(credentials);
 
                 if (validatedFields.success) {
@@ -25,7 +30,9 @@ export default {
                         user.password
                     );
 
-                    if (passwordMatch) return user;
+                    if (!passwordMatch) throw new Error("Password Not Match.");
+
+                    return user;
                 }
                 return null;
             },
