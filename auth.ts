@@ -7,13 +7,25 @@ import { getUserById } from "./data/user";
 import { AdapterUser } from "next-auth/adapters";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    pages: {
+        signIn: "/auth/login", // whatever something goes wrong then next auth redirect user to this page
+        error: "/auth/error", // and when something breaks then its shows this custom error page
+    },
+    events: {
+        async linkAccount({ user }) {
+            await db.user.update({
+                where: { id: user.id },
+                data: { emailVerified: new Date() },
+            });
+        },
+    },
     callbacks: {
         async signIn({ user }) {
-            const current_user = user as AdapterUser;
+            // const current_user = user as AdapterUser;
 
-            if (!current_user.emailVerified) {
-                return false;
-            }
+            // if (!current_user.emailVerified) {
+            //     return false;
+            // }
 
             return true;
         },
