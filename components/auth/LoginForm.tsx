@@ -49,7 +49,7 @@ const LoginForm = () => {
                 if (data?.error) {
                     setError(data.error);
                 } else {
-                    setSuccess("Login successful!");
+                    setSuccess(data?.success);
                     // You can redirect or perform any other actions on success here
                 }
             });
