@@ -20,3 +20,6 @@ export const RegisterSchema = z.object({
         message: "Name is required.",
     }),
 });
+
+// copy login schema except password field
+export const ResetPasswordSchema = LoginSchema.pick({ email: true });
