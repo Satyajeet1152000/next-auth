@@ -20,6 +20,7 @@ import FormError from "../FormError";
 import FormSuccess from "../FormSuccess";
 import { login } from "@/actions/auth/login";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const LoginForm = () => {
     const searchParams = useSearchParams();
@@ -100,6 +101,16 @@ const LoginForm = () => {
                                             type="password"
                                         />
                                     </FormControl>
+                                    <Button
+                                        size="sm"
+                                        variant="link"
+                                        asChild
+                                        className="px-0"
+                                    >
+                                        <Link href="/auth/reset-password">
+                                            Forgot Password?
+                                        </Link>
+                                    </Button>
                                     <FormMessage />
                                 </FormItem>
                             )}
