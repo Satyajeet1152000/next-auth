@@ -20,7 +20,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
     },
     callbacks: {
-        async signIn({ user }) {
+        async signIn({ user, account }) {
+            // Allow Oauth without email verification
+            if (account?.provider !== "credentials") return true;
+
+            const existingUser = await getUserById(user.id as string);
+
+            // prvent sign in without email verification
+            if (!existingUser?.emailVerified) return false;
+
+            // TODO:   Add 2FA check
+
             // const current_user = user as AdapterUser;
 
             // if (!current_user.emailVerified) {
