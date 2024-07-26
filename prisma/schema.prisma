@@ -19,16 +19,38 @@ enum UserRole {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String    @unique
-    password      String?
-    role          UserRole  @default(USER)
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
+    id                String             @id @default(cuid())
+    name              String?
+    email             String             @unique
+    password          String?
+    role              UserRole           @default(USER)
+    emailVerified     DateTime?
+    image             String?
+    accounts          Account[]
+    isTwoAFEnable     Boolean            @default(false)
+    twoAFConfirmation TwoAFConfirmation?
+
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
+    twoAFConfirmationId String?
+}
+
+model TwoAFToken {
+    id      String   @id @default(cuid())
+    email   String
+    token   String   @unique
+    expires DateTime
+
+    @@unique([email, token])
+}
+
+model TwoAFConfirmation {
+    id     String @id @default(cuid())
+    userId String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([userId])
 }
 
 model Account {
