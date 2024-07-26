@@ -23,3 +23,10 @@ export const RegisterSchema = z.object({
 
 // copy login schema except password field
 export const ResetPasswordSchema = LoginSchema.pick({ email: true });
+export const NewPasswordSchema = RegisterSchema.pick({ password: true }).extend(
+    {
+        confirm_password: z.string().min(6, {
+            message: "Minimum 6 character required.",
+        }),
+    }
+);

@@ -7,8 +7,8 @@
 export const publicRoutes = [
     "/",
     "/auth/email-verification",
-    "/auth/reset-password",
-    "/auth/new-password",
+    // "/auth/reset-password",
+    // "/auth/new-password",
 ];
 
 /**
@@ -16,7 +16,13 @@ export const publicRoutes = [
  * @type {string[]}
  */
 
-export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
+export const authRoutes = [
+    "/auth/login",
+    "/auth/register",
+    "/auth/error",
+    "/auth/reset-password",
+    "/auth/new-password",
+];
 
 /**
  * The prefix for API authentication routes.
