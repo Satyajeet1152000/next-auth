@@ -2,6 +2,7 @@ import { getVerificationTokenByEmail } from "@/data/verificationToken";
 import { v4 as uuidV4 } from "uuid";
 import { db } from "./db";
 import { getPasswordResetTokenByEmail } from "@/data/passwordReset";
+import crypto from "crypto";
 
 export const generateVerificationToken = async (email: string) => {
     const token = uuidV4();
@@ -49,4 +50,10 @@ export const generatePasswordResetToken = async (email: string) => {
     });
 
     return passwordResetToken;
+};
+
+export const generate2AFToken = async (email: string) => {
+    const token = crypto.randomInt(100_000, 1_000_000); // 100_000 === 100000 both are equal. _ use for 0s count
+
+    const expires = new Date(new Date().getTime() + 3600 * 1000);
 };
